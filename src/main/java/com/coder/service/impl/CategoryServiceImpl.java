@@ -16,6 +16,7 @@ import com.coder.entity.Category;
 import com.coder.exception.ResourceNotFoundException;
 import com.coder.repository.CategoryRepository;
 import com.coder.service.CategoryService;
+import com.coder.util.Validation;
 
 @Service
 public class CategoryServiceImpl implements CategoryService{
@@ -26,6 +27,8 @@ public class CategoryServiceImpl implements CategoryService{
 	@Autowired
 	private ModelMapper mapper;
 	
+	@Autowired
+	private Validation validation;
 	@Override
 	public Boolean saveCategory(CategoryDto categoryDto) {
 		
@@ -33,6 +36,10 @@ public class CategoryServiceImpl implements CategoryService{
 //		category.setName(categoryDto.getName());
 //		category.setDescription(categoryDto.getDescription());
 //		category.setIsActive(categoryDto.getIsActive());
+		
+		//use for validation 
+		validation.categoryValidation(categoryDto);
+		// this is used for check name is already exist
 		Category existingCategory=categoryRepo.findByName(categoryDto.getName());
 		if(existingCategory != null && (categoryDto.getId() == null || !existingCategory.getId().equals(categoryDto.getId()))) {
 			throw new IllegalArgumentException("Name is Already Exist");
