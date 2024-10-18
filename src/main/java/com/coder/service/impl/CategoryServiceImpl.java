@@ -13,6 +13,7 @@ import org.springframework.util.ObjectUtils;
 import com.coder.dto.CategoryDto;
 import com.coder.dto.CategoryResponse;
 import com.coder.entity.Category;
+import com.coder.exception.ResourceNotFoundException;
 import com.coder.repository.CategoryRepository;
 import com.coder.service.CategoryService;
 
@@ -32,6 +33,11 @@ public class CategoryServiceImpl implements CategoryService{
 //		category.setName(categoryDto.getName());
 //		category.setDescription(categoryDto.getDescription());
 //		category.setIsActive(categoryDto.getIsActive());
+		Category existingCategory=categoryRepo.findByName(categoryDto.getName());
+		if(existingCategory != null && (categoryDto.getId() == null || !existingCategory.getId().equals(categoryDto.getId()))) {
+			throw new IllegalArgumentException("Name is Already Exist");
+		}
+		
 		Category category = mapper.map(categoryDto, Category.class);
 		if(ObjectUtils.isEmpty(category.getId())) {
 			category.setIsDeleted(false);
@@ -75,10 +81,15 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 
 	@Override
-	public CategoryDto getCategoryById(Integer id) {
-		Optional<Category> findByCategoey = categoryRepo.findByIdAndIsDeletedFalse(id);
-		if(findByCategoey.isPresent()) {
-			Category category = findByCategoey.get();
+	public CategoryDto getCategoryById(Integer id) throws Exception {
+//		Optional<Category> findByCategoey = categoryRepo.findByIdAndIsDeletedFalse(id);
+//		if(findByCategoey.isPresent()) {
+//			Category category = findByCategoey.get();
+//			return mapper.map(category, CategoryDto.class);
+//		}
+		Category category = categoryRepo.findByIdAndIsDeletedFalse(id).orElseThrow(() -> new  ResourceNotFoundException("Category not found id = "+id));
+		if(!ObjectUtils.isEmpty(category)) {
+			
 			return mapper.map(category, CategoryDto.class);
 		}
 		return null;
