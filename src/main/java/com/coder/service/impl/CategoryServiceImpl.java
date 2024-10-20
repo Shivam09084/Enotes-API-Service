@@ -1,7 +1,7 @@
 package com.coder.service.impl;
 
 
-import java.util.Date;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -13,6 +13,7 @@ import org.springframework.util.ObjectUtils;
 import com.coder.dto.CategoryDto;
 import com.coder.dto.CategoryResponse;
 import com.coder.entity.Category;
+import com.coder.exception.ExistDataException;
 import com.coder.exception.ResourceNotFoundException;
 import com.coder.repository.CategoryRepository;
 import com.coder.service.CategoryService;
@@ -40,9 +41,14 @@ public class CategoryServiceImpl implements CategoryService{
 		//use for validation 
 		validation.categoryValidation(categoryDto);
 		// this is used for check name is already exist
-		Category existingCategory=categoryRepo.findByName(categoryDto.getName());
-		if(existingCategory != null && (categoryDto.getId() == null || !existingCategory.getId().equals(categoryDto.getId()))) {
-			throw new IllegalArgumentException("Name is Already Exist");
+//		Category existingCategory=categoryRepo.findByName(categoryDto.getName());
+//		if(existingCategory != null && (categoryDto.getId() == null || !existingCategory.getId().equals(categoryDto.getId()))) {
+//			throw new IllegalArgumentException("Name is Already Exist");
+//		}
+		
+		Boolean existsByName = categoryRepo.existsByName(categoryDto.getName().trim());
+		if(existsByName) {
+			throw new ExistDataException("Category is Already Exist");
 		}
 		
 		Category category = mapper.map(categoryDto, Category.class);
