@@ -11,13 +11,13 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.coder.dto.NotesDto;
+import com.coder.dto.NotesResponse;
 import com.coder.entity.FileDetails;
 import com.coder.service.NotesService;
 import com.coder.util.CommonUtil;
@@ -62,6 +62,17 @@ public class NotesController {
 		 headers.setContentDispositionFormData("attachment", fileDetails.getOriginalFileName());
 		 
 		 return ResponseEntity.ok().headers(headers).body(data);
+	 }
+	 
+	 // Pagination Notes
+	 @GetMapping("/user-notes")
+	 public ResponseEntity<?> getAllNotesByUser(@RequestParam(name="pageNo" ,defaultValue = "0")Integer pageNo,
+			 									@RequestParam(name="pageSize",defaultValue = "5") Integer pageSize)
+	 {
+		 Integer userId = 1;
+		 NotesResponse notesByUser = notesService.getAllNotesByUser(userId, pageNo, pageSize);
+		 
+		 return CommonUtil.createBuildResponse(notesByUser, HttpStatus.OK);
 	 }
 
 }
