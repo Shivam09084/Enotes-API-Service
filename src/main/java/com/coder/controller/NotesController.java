@@ -75,4 +75,27 @@ public class NotesController {
 		 return CommonUtil.createBuildResponse(notesByUser, HttpStatus.OK);
 	 }
 
+	 // delete Related API
+	 @GetMapping("/delete/{id}")
+	 public ResponseEntity<?> deleteNotes(@PathVariable Integer id) throws Exception{
+		 notesService.softDeleteNotes(id);
+		 return CommonUtil.createBuildResponseMessage("Note Delete Successfully", HttpStatus.OK);
+	 }
+	 
+	 @GetMapping("/restore/{id}")
+	 public ResponseEntity<?> restoreNotes(@PathVariable Integer id) throws Exception{
+		 notesService.restoreNotes(id);
+		 return CommonUtil.createBuildResponseMessage("Notes Restore Successfully", HttpStatus.OK);
+	 }
+	 
+	 @GetMapping("/recycle-bin")
+	 public ResponseEntity<?> getUserRecycleBinNotes(){
+		 Integer userId = 1;
+		 List<NotesDto> notes = notesService.getUserRecycleBinNotes(userId);
+		 
+		 if(CollectionUtils.isEmpty(notes)) {
+			 return CommonUtil.createBuildResponseMessage("Notes Not available in Recycle Bin", HttpStatus.OK);
+		 }
+		 return CommonUtil.createBuildResponse(notes, HttpStatus.OK);
+	 }
 }

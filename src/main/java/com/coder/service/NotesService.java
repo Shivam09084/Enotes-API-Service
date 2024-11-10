@@ -15,4 +15,10 @@ public interface NotesService {
 	public byte[] downloadFile(FileDetails fileDetails) throws Exception;
 	public FileDetails getFileDetails(Integer id) throws Exception;
 	public NotesResponse getAllNotesByUser(Integer userId, Integer pageNo, Integer pageSize);
+	
+	// delete Notes Api Method
+	
+	public void softDeleteNotes(Integer userId) throws Exception;
+	public void restoreNotes(Integer userId) throws Exception;
+	public List<NotesDto> getUserRecycleBinNotes(Integer userId);
 }
