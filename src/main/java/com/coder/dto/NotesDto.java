@@ -1,5 +1,6 @@
 package com.coder.dto;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.Data;
@@ -17,7 +18,7 @@ public class NotesDto {
 	private Date updatedOn;
 	private FilesDto fileDetails;
 	private Boolean isDeleted;
-	private Date deletedOn;
+	private LocalDateTime deletedOn;
 	
 	@Data
 	public static class FilesDto{
