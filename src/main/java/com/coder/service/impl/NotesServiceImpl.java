@@ -26,14 +26,17 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.coder.dto.FavouriteNoteDto;
 import com.coder.dto.NotesDto;
 import com.coder.dto.NotesDto.CategoryDto;
 import com.coder.dto.NotesDto.FilesDto;
 import com.coder.dto.NotesResponse;
+import com.coder.entity.FavouriteNote;
 import com.coder.entity.FileDetails;
 import com.coder.entity.Notes;
 import com.coder.exception.ResourceNotFoundException;
 import com.coder.repository.CategoryRepository;
+import com.coder.repository.FavouriteNoteRepository;
 import com.coder.repository.FileRepository;
 import com.coder.repository.NotesRepository;
 import com.coder.service.NotesService;
@@ -44,6 +47,9 @@ public class NotesServiceImpl implements NotesService{
 
 	@Autowired
 	private NotesRepository notesRepo;
+	
+	@Autowired
+	private FavouriteNoteRepository favouriteNoteRepo;
 	
 	@Autowired
 	private CategoryRepository categoryRepo;
@@ -251,6 +257,37 @@ public class NotesServiceImpl implements NotesService{
 		}
 		
 	}
+
+	@Override
+	public void favouriteNotes(Integer noteId) throws Exception {
+		
+		Integer userId = 1;
+		boolean exists = favouriteNoteRepo.existsByNoteIdAndUserId(noteId, userId);
+		if(exists) {
+			throw new Exception("This Note is Already Marked");
+		}
+		Notes notes = notesRepo.findById(noteId).orElseThrow(() -> new ResourceNotFoundException("Note not found & id is invalid"));
+		FavouriteNote favouriteNote = FavouriteNote.builder().note(notes).userId(userId).build();
+		favouriteNoteRepo.save(favouriteNote);
+	}
+
+	@Override
+	public void unFavouriteNotes(Integer noteId) throws Exception {
+		
+		FavouriteNote favouriteNote = favouriteNoteRepo.findById(noteId).orElseThrow(() -> new ResourceNotFoundException("Favoourite Note not found"));
+		favouriteNoteRepo.delete(favouriteNote);
+	}
+
+	@Override
+	public List<FavouriteNoteDto> getUserFavouriteNotes() throws Exception {
+		
+		Integer userId = 1;
+		List<FavouriteNote> favouriteNotes = favouriteNoteRepo.findByUserId(userId);
+		
+		return favouriteNotes.stream().map(fn -> mapper.map(fn, FavouriteNoteDto.class)).toList();
+	}
+	
+	
 	
 	
 }
