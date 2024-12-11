@@ -34,7 +34,7 @@ public class User {
 	private String password;
 	private String mobNo;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Role>roles;
 	
 	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
