@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class NotesController {
 	private NotesService notesService;
 	
 	@PostMapping("/save")
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> saveNotes(@RequestParam String notes, @RequestParam(required = false) MultipartFile file) throws Exception{
 		
 		Boolean saveNotes = notesService.saveNotes(notes, file);
@@ -43,6 +45,7 @@ public class NotesController {
 	}
 	
 	@GetMapping("/")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<?> getAllNotes(){
 		List<NotesDto> allNotes = notesService.getAllNotes();
 		if(CollectionUtils.isEmpty(allNotes)) {
@@ -53,6 +56,7 @@ public class NotesController {
 	
 	// download Notes
 	 @GetMapping("/download/{id}")
+	 @PreAuthorize("hasAnyRole('ADMIN','USER')")
 	 public ResponseEntity<?> downloadFile(@PathVariable Integer id) throws Exception{
 		 
 		 FileDetails fileDetails = notesService.getFileDetails(id);
@@ -68,6 +72,7 @@ public class NotesController {
 	 
 	 // Pagination Notes
 	 @GetMapping("/user-notes")
+	 @PreAuthorize("hasRole('USER')")
 	 public ResponseEntity<?> getAllNotesByUser(@RequestParam(name="pageNo" ,defaultValue = "0")Integer pageNo,
 			 									@RequestParam(name="pageSize",defaultValue = "5") Integer pageSize)
 	 {
@@ -79,18 +84,21 @@ public class NotesController {
 
 	 // delete Related API
 	 @GetMapping("/delete/{id}")
+	 @PreAuthorize("hasRole('USER')")
 	 public ResponseEntity<?> deleteNotes(@PathVariable Integer id) throws Exception{
 		 notesService.softDeleteNotes(id);
 		 return CommonUtil.createBuildResponseMessage("Note Delete Successfully", HttpStatus.OK);
 	 }
 	 
 	 @GetMapping("/restore/{id}")
+	 @PreAuthorize("hasRole('USER')")
 	 public ResponseEntity<?> restoreNotes(@PathVariable Integer id) throws Exception{
 		 notesService.restoreNotes(id);
 		 return CommonUtil.createBuildResponseMessage("Notes Restore Successfully", HttpStatus.OK);
 	 }
 	 
 	 @GetMapping("/recycle-bin")
+	 @PreAuthorize("hasRole('USER')")
 	 public ResponseEntity<?> getUserRecycleBinNotes(){
 		 Integer userId = 1;
 		 List<NotesDto> notes = notesService.getUserRecycleBinNotes(userId);
@@ -102,6 +110,7 @@ public class NotesController {
 	 }
 	 
 	 @DeleteMapping("/delete/{id}")
+	 @PreAuthorize("hasRole('USER')")
 	 public ResponseEntity<?> hardDeleteNotes(@PathVariable Integer id) throws Exception{
 		 
 		 notesService.hardDeleteNotes(id);
@@ -109,6 +118,7 @@ public class NotesController {
 	 }
 	 
 	 @DeleteMapping("/delete")
+	 @PreAuthorize("hasRole('USER')")
 	 public ResponseEntity<?> emptyRecycleBin() {
 		 
 		 Integer userId = 1;
@@ -119,6 +129,7 @@ public class NotesController {
 	 // favourite Note Related API
 	 
 	 @GetMapping("/fav/{noteId}")
+	 @PreAuthorize("hasRole('USER')")
 	 public ResponseEntity<?> favouriteNote(@PathVariable Integer noteId ) throws Exception{
 		 
 		 notesService.favouriteNotes(noteId);
@@ -126,6 +137,7 @@ public class NotesController {
 	 }
 	 
 	 @DeleteMapping("/unfav/{favNoteId}")
+	 @PreAuthorize("hasRole('USER')")
 	 public ResponseEntity<?> unFavouriteNote(@PathVariable Integer favNoteId) throws Exception{
 		 
 		 notesService.unFavouriteNotes(favNoteId);
@@ -133,6 +145,7 @@ public class NotesController {
 	 }
 	 
 	 @GetMapping("/fav-note")
+	 @PreAuthorize("hasRole('USER')")
 	 public ResponseEntity<?> getUserFavouriteNote() throws Exception{
 		 
 		 List<FavouriteNoteDto> favouriteNotes = notesService.getUserFavouriteNotes();
@@ -143,6 +156,7 @@ public class NotesController {
 	 }
 	 
 	 @GetMapping("/copy/{id}")
+	 @PreAuthorize("hasRole('USER')")
 	 public ResponseEntity<?> copyNotes(@PathVariable Integer id) throws Exception{
 		 
 		 Boolean copyNotes = notesService.copyNotes(id);
