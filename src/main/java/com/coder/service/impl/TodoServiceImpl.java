@@ -14,6 +14,7 @@ import com.coder.enums.TodoStatus;
 import com.coder.exception.ResourceNotFoundException;
 import com.coder.repository.TodoRepository;
 import com.coder.service.TodoService;
+import com.coder.util.CommonUtil;
 import com.coder.util.Validation;
 
 @Service
@@ -69,7 +70,7 @@ public class TodoServiceImpl implements TodoService {
 	@Override
 	public List<TodoDto> getTodoByUser() {
 		
-		Integer userId = 1;
+		Integer userId = CommonUtil.getLoggedInUser().getId();
 		List<Todo> todos = todoRepo.findByCreatedBy(userId);
 		return todos.stream().map(td -> mapper.map(td, TodoDto.class)).toList();
 	}

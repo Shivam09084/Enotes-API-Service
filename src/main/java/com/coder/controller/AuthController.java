@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.coder.dto.LoginRequest;
 import com.coder.dto.LoginResponse;
-import com.coder.dto.UserDto;
+import com.coder.dto.UserRequest;
 import com.coder.service.UserService;
 import com.coder.util.CommonUtil;
 
@@ -27,7 +27,7 @@ public class AuthController {
 	private UserService userService;
 	
 	@PostMapping("/")
-	public ResponseEntity<?> registerUser(@RequestBody UserDto userDto, HttpServletRequest request) throws Exception{
+	public ResponseEntity<?> registerUser(@RequestBody UserRequest userDto, HttpServletRequest request) throws Exception{
 		
 		String url = CommonUtil.getUrl(request);
 		Boolean register = userService.register(userDto,url);

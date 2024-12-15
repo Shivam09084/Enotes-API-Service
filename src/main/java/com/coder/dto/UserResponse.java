@@ -2,6 +2,7 @@ package com.coder.dto;
 
 import java.util.List;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,9 +14,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class UserDto {
-	
-	
+public class UserResponse {
+
 	private Integer id;
 	private String firstName;
 	private String lastName;
@@ -34,5 +34,15 @@ public class UserDto {
 		private Integer id;
 		private String name;
 	}
-
+	
+	@AllArgsConstructor
+	@NoArgsConstructor
+	@Getter
+	@Setter
+	@Builder
+	public static class StatusDto{
+		
+		private Integer id;
+		private Boolean isActive;
+	}
 }

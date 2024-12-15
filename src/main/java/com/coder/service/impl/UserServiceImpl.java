@@ -16,7 +16,7 @@ import com.coder.config.security.CustomUserDetails;
 import com.coder.dto.EmailRequest;
 import com.coder.dto.LoginRequest;
 import com.coder.dto.LoginResponse;
-import com.coder.dto.UserDto;
+import com.coder.dto.UserRequest;
 import com.coder.entity.AccountStatus;
 import com.coder.entity.Role;
 import com.coder.entity.User;
@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
 	private JwtService jwtService;
 	
 	@Override
-	public Boolean register(UserDto userDto,String url) throws Exception {
+	public Boolean register(UserRequest userDto,String url) throws Exception {
 		
 		validation.userValidation(userDto);
 		User user = mapper.map(userDto, User.class);
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 									.build();
 		emailService.sendEmail(emailRequest);
 	}
-	private void setRole(UserDto userDto, User user) {
+	private void setRole(UserRequest userDto, User user) {
 		
 		List<Integer> reqRoleId = userDto.getRoles().stream().map(r->r.getId()).toList();
 		List<Role> roles = roleRepo.findAllById(reqRoleId);
@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
 			String token=jwtService.generateToken(customUserDetails.getUser());
 			
 			LoginResponse loginResponse = LoginResponse.builder()
-					.user(mapper.map(customUserDetails.getUser(), UserDto.class))
+					.user(mapper.map(customUserDetails.getUser(), UserRequest.class))
 					.token(token)
 					.build();
 			return loginResponse;

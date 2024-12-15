@@ -40,6 +40,7 @@ import com.coder.repository.FavouriteNoteRepository;
 import com.coder.repository.FileRepository;
 import com.coder.repository.NotesRepository;
 import com.coder.service.NotesService;
+import com.coder.util.CommonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
@@ -193,8 +194,9 @@ public class NotesServiceImpl implements NotesService{
 // Page Pagination Logic
 	
 	@Override
-	public NotesResponse getAllNotesByUser(Integer userId, Integer pageNo, Integer pageSize) {
+	public NotesResponse getAllNotesByUser( Integer pageNo, Integer pageSize) {
 		
+		Integer userId = CommonUtil.getLoggedInUser().getId();
 		Pageable pageable = PageRequest.of(pageNo, pageSize);
 		Page<Notes> pageNotes = notesRepo.findByCreatedByAndIsDeletedFalse(userId, pageable);
 		
@@ -228,7 +230,9 @@ public class NotesServiceImpl implements NotesService{
 		}
 
 	@Override
-	public List<NotesDto> getUserRecycleBinNotes(Integer userId) {
+	public List<NotesDto> getUserRecycleBinNotes() {
+		
+		Integer userId = CommonUtil.getLoggedInUser().getId();
 		List<Notes> recycleNotes = notesRepo.findByCreatedByAndIsDeletedTrue(userId);
 		List<NotesDto> list = recycleNotes.stream().map(note -> mapper.map(note, NotesDto.class)).toList();
 		
@@ -250,7 +254,9 @@ public class NotesServiceImpl implements NotesService{
 	}
 
 	@Override
-	public void emptyRecycleBin(Integer userId) {
+	public void emptyRecycleBin() {
+		
+		Integer userId = CommonUtil.getLoggedInUser().getId();
 		List<Notes> recycleNotes = notesRepo.findByCreatedByAndIsDeletedTrue(userId);
 		if(!CollectionUtils.isEmpty(recycleNotes)) {
 			notesRepo.deleteAll(recycleNotes);
