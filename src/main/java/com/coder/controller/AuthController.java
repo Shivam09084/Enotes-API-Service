@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.coder.dto.LoginRequest;
 import com.coder.dto.LoginResponse;
 import com.coder.dto.UserRequest;
-import com.coder.service.UserService;
+import com.coder.service.AuthService;
 import com.coder.util.CommonUtil;
 
 import ch.qos.logback.core.net.LoginAuthenticator;
@@ -24,13 +24,13 @@ import jakarta.servlet.http.HttpServletRequest;
 public class AuthController {
 
 	@Autowired
-	private UserService userService;
+	private AuthService authService;
 	
 	@PostMapping("/")
 	public ResponseEntity<?> registerUser(@RequestBody UserRequest userDto, HttpServletRequest request) throws Exception{
 		
 		String url = CommonUtil.getUrl(request);
-		Boolean register = userService.register(userDto,url);
+		Boolean register = authService.register(userDto,url);
 		if(register) {
 			return CommonUtil.createBuildResponseMessage("Register Successfully", HttpStatus.CREATED);
 		}
@@ -40,7 +40,7 @@ public class AuthController {
 	@GetMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) throws Exception{
 		
-		LoginResponse loginResponse = userService.login(loginRequest);
+		LoginResponse loginResponse = authService.login(loginRequest);
 		if(ObjectUtils.isEmpty(loginResponse)) {
 			return CommonUtil.createErrorResponseMessage("Invalid crendtial", HttpStatus.BAD_REQUEST);
 		}
