@@ -17,6 +17,8 @@ public interface NotesService {
 	public FileDetails getFileDetails(Integer id) throws Exception;
 	public NotesResponse getAllNotesByUser( Integer pageNo, Integer pageSize);
 	
+	//Search Notes 
+	public NotesResponse getNotesByUserSearch(Integer pageNo, Integer pageSize, String keyword);
 	// delete Notes Api Method
 	
 	public void softDeleteNotes(Integer userId) throws Exception;
