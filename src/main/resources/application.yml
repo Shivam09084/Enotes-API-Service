@@ -35,7 +35,9 @@ spring:
         smtp:
           auth: true
           starttls:
-            enable: true    
+            enable: true
+server:
+  port: 7001
 file:
   upload:
     path: notes/
@@ -70,7 +72,9 @@ spring:
         smtp:
           auth: true
         starttls:
-          enable: true       
+          enable: true 
+server:
+  port: 7001      
 file:
   upload:
     path: notes/
@@ -105,7 +109,9 @@ spring:
         smtp:
           auth: true
         starttls:
-          enable: true       
+          enable: true 
+server:
+  port: 7001      
 file:
   upload:
     path: notes/
@@ -140,7 +146,9 @@ spring:
         smtp:
           auth: true
         starttls:
-          enable: true       
+          enable: true  
+server:
+  port: 7001     
 file:
   upload:
     path: notes/
