@@ -16,6 +16,9 @@ import com.coder.entity.User;
 import com.coder.service.UserService;
 import com.coder.util.CommonUtil;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/user")
 public class UserController {

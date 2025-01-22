@@ -18,7 +18,9 @@ import com.coder.util.CommonUtil;
 
 import ch.qos.logback.core.net.LoginAuthenticator;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -26,15 +28,19 @@ public class AuthController {
 	@Autowired
 	private AuthService authService;
 	
-	@PostMapping("/")
+	@PostMapping("/register")
 	public ResponseEntity<?> registerUser(@RequestBody UserRequest userDto, HttpServletRequest request) throws Exception{
+		
 		
 		String url = CommonUtil.getUrl(request);
 		Boolean register = authService.register(userDto,url);
-		if(register) {
-			return CommonUtil.createBuildResponseMessage("Register Successfully", HttpStatus.CREATED);
+		
+		if(!register) {
+			log.info("Error : {}"," Registeration failed");
+			return CommonUtil.createErrorResponseMessage("Register not saved", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return CommonUtil.createErrorResponseMessage("Register not saved", HttpStatus.INTERNAL_SERVER_ERROR);
+		log.info("AuthController : registerUser():  ExecutionStart");
+		return CommonUtil.createBuildResponseMessage("Register Successfully", HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/login")

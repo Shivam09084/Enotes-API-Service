@@ -29,19 +29,19 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<?> handleIllegalArgumentException(IllegalArgumentException e){
 		
-		log.error("GlobalExceptionHandler :: handleException "+e.getMessage());
+		log.error("GlobalExceptionHandler :: handleIllegalArgumentException "+e.getMessage());
 		return CommonUtil.createErrorResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(AccessDeniedException.class)
 	public ResponseEntity<?> handleAccessDeniedException(AccessDeniedException e){	
-		log.error("GlobalExceptionHandler :: handleException "+e.getMessage());
+		log.error("GlobalExceptionHandler :: handleAccessDeniedException "+e.getMessage());
 		return CommonUtil.createErrorResponseMessage(e.getMessage(), HttpStatus.FORBIDDEN);
 	}
 	
 	@ExceptionHandler(SuccessException.class)
 	public ResponseEntity<?> handleSuccessException(SuccessException e){		
-		log.error("GlobalExceptionHandler :: handleException "+e.getMessage());
+		log.error("GlobalExceptionHandler :: handleSuccessException "+e.getMessage());
 		return CommonUtil.createBuildResponseMessage(e.getMessage(), HttpStatus.OK);
 	}
 	
@@ -61,29 +61,34 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(ValidationException.class)
 	public ResponseEntity<?> handleValidationException(ValidationException e){
+		log.error("GlobalExceptionHandler :: handleValidationException "+e.getMessage());
 //		return new ResponseEntity<>(e.getErrors(),HttpStatus.BAD_REQUEST);
 		return CommonUtil.createErrorResponse(e.getErrors(), HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(ExistDataException.class)
 	public ResponseEntity<?> handleExistDataException(ExistDataException e){
+		log.error("GlobalExceptionHandler :: handleExistDataException "+e.getMessage());
 //		return new ResponseEntity<>(e.getMessage(),HttpStatus.CONFLICT);
 		return CommonUtil.createErrorResponseMessage(e.getMessage(), HttpStatus.CONFLICT);
 	}
 	
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<?> handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
+		log.error("GlobalExceptionHandler :: handleHttpMessageNotReadableException "+e.getMessage());
 //		return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
 		return CommonUtil.createErrorResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(FileNotFoundException.class)
 	public ResponseEntity<?> handleFileNotFoundException(FileNotFoundException e){
+		log.error("GlobalExceptionHandler :: handleFileNotFoundException "+e.getMessage());
 		return CommonUtil.createErrorResponseMessage(e.getMessage(), HttpStatus.NO_CONTENT);
 	}
 	
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException e){
+		log.error("GlobalExceptionHandler :: handleBadCredentialsException "+e.getMessage());
 		return CommonUtil.createErrorResponseMessage(e.getMessage(), HttpStatus.BAD_REQUEST);
 	}
 }
