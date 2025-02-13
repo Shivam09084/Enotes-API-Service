@@ -36,6 +36,14 @@ spring:
           auth: true
           starttls:
             enable: true
+springdoc:
+  swagger-ui:
+    operationsSorter: method
+    tagsSorter: alpha
+    path: /enotes-doc
+  api-docs:
+    path: /enotes-api-doc 
+
 server:
   port: 7001
 file:
@@ -72,9 +80,16 @@ spring:
         smtp:
           auth: true
         starttls:
-          enable: true 
+          enable: true
+springdoc:
+  swagger-ui:
+    operationsSorter: method
+    tagsSorter: alpha
+    path: /enotes-doc
+  api-docs:
+    path: /enotes-api-doc 
 server:
-  port: 7001      
+  port: 7002      
 file:
   upload:
     path: notes/
@@ -110,11 +125,19 @@ spring:
           auth: true
         starttls:
           enable: true 
+springdoc:
+  swagger-ui:
+    operationsSorter: method
+    tagsSorter: alpha
+    path: /enotes-doc
+  api-docs:
+    path: /enotes-api-doc 
 server:
   port: 7001      
 file:
   upload:
     path: notes/
+
 ---
 # prod config
 spring:
@@ -147,8 +170,15 @@ spring:
           auth: true
         starttls:
           enable: true  
+springdoc:
+  swagger-ui:
+    operationsSorter: method
+    tagsSorter: alpha
+    path: /enotes-doc
+  api-docs:
+    path: /enotes-api-doc 
 server:
-  port: 7001     
+  port: 7003     
 file:
   upload:
     path: notes/
